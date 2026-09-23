@@ -1,6 +1,6 @@
 # Outils de vibe quand il est l'agent par défaut
 
-**Status**: backlog -- raised 2026-09-23 (revue du plan 001-default-agent)
+**Status**: obsolete -- plan 001-default-agent abandonné : vibe ne devient pas l'agent par défaut ; reprise éventuelle dans `vibe-default-agent.md` (2026-09-23)
 
 ## Problem
 Quand `vibe` est l'agent principal par défaut d'un projet (plan 001), TOUTES les sessions du projet
