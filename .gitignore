@@ -1,0 +1,8 @@
+# Claude Code local config: never committed, except the agents (versioned for cloud sessions)
+.claude/*
+!.claude/agents/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
