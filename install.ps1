@@ -64,7 +64,7 @@ if ($Target) {
   Copy-Agents (Join-Path $Target '.claude\agents')
 
   foreach ($f in 'STACK.md', 'INVARIANTS.md', 'CONVENTIONS.md') {
-    Copy-IfMissing (Join-Path $kit ".vibes\$f") (Join-Path $Target ".vibes\$f")
+    Copy-IfMissing (Join-Path $kit "templates\vibes\$f") (Join-Path $Target ".vibes\$f")
   }
   foreach ($d in 'plans', 'notes', 'audits') {
     $keep = Join-Path $Target ".vibes\$d\.gitkeep"

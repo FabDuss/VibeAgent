@@ -66,7 +66,7 @@ if [[ -n "$TARGET" ]]; then
   copy_agents "$TARGET/.claude/agents"
 
   for f in STACK.md INVARIANTS.md CONVENTIONS.md; do
-    copy_if_missing "$KIT/.vibes/$f" "$TARGET/.vibes/$f"
+    copy_if_missing "$KIT/templates/vibes/$f" "$TARGET/.vibes/$f"
   done
   for d in plans notes audits; do
     if [[ ! -d "$TARGET/.vibes/$d" ]]; then
