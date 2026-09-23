@@ -116,8 +116,8 @@ doivent pouvoir reprendre à partir du repo seul.
 ## Migrer un projet équipé en v1 (ex. SuiviTransfo)
 1. Relancer le script sur le projet : les agents passent en v2, et les fichiers `.vibes/` existants sont conservés.
 2. Demander à `vibe` un plan « migration .vibes v2 » (voie standard) couvrant :
-   - réécrire STACK au format v2 (composants, parité CI, baseline, ports, git, release, langues), en partant du template du kit ;
-   - fusionner la partie A du `CONVENTIONS.md` du kit dans le fichier existant (les revues y renvoient, par exemple le plancher UI A8) ;
+   - réécrire STACK au format v2 (composants, parité CI, baseline, ports, git, release, langues), en partant de `templates/vibes/STACK.md` ;
+   - fusionner la partie A de `templates/vibes/CONVENTIONS.md` dans le fichier existant (les revues y renvoient, par exemple le plancher UI A8) ;
    - convertir INVARIANTS en entrées `INV-NNN` courtes avec champ Guard, archiver l'historique dans `## Retired` ou dans les plans, et remplacer les renvois `§NN` dans le code ;
    - normaliser les statuts des plans et des notes ;
    - commiter les plans non suivis.
@@ -128,25 +128,39 @@ doivent pouvoir reprendre à partir du repo seul.
 .
 ├── README.md                  <- ce fichier
 ├── CHANGELOG.md
+├── CLAUDE.md                  <- règles de session pour développer le kit lui-même
 ├── .gitattributes             <- fins de ligne LF (modèle à reprendre dans tes projets)
 ├── docs/LESSONS-TRANSFO.md    <- les leçons SuiviTransfo et où chacune est encodée
 ├── install.ps1 / install.sh   <- installation / mise à jour dans un projet
-├── .claude/agents/            <- les 5 agents (copiés dans le projet)
+├── tests/check-kit.sh         <- garde du kit (à lancer avant chaque commit)
+├── .claude/agents/            <- les 5 agents (utilisés ici ET copiés dans les projets)
 │   ├── vibe.md
 │   ├── vibe-codeur.md
 │   ├── vibe-plan-reviewer.md
 │   ├── vibe-code-reviewer.md
 │   └── vibe-auditor.md
-├── .vibes/                    <- templates copiés s'ils manquent
-│   ├── STACK.md
-│   ├── INVARIANTS.md
-│   ├── CONVENTIONS.md
-│   └── plans/ notes/ audits/
-└── templates/                 <- optionnels (-WithDocs)
-    ├── VISION.md
-    ├── ARCHITECTURE.md
-    └── CLAUDE.md              <- règles du mode relais pour la session principale
+├── templates/                 <- ce qui est copié dans les projets
+│   ├── vibes/                 <- toujours, s'ils manquent : STACK.md, INVARIANTS.md, CONVENTIONS.md
+│   ├── VISION.md              <- avec -WithDocs, s'il manque
+│   ├── ARCHITECTURE.md        <- idem
+│   └── CLAUDE.md              <- idem (règles du mode relais pour la session principale)
+└── .vibes/                    <- l'espace de travail du kit lui-même (jamais copié)
+    ├── STACK.md INVARIANTS.md CONVENTIONS.md
+    └── plans/ notes/ audits/
 ```
+
+## Faire évoluer le kit
+Le kit se développe avec ses propres agents : `claude --agent vibe` à la racine de ce dépôt.
+- Son `.vibes/` est **son** espace de travail (STACK rempli, invariants du kit, plans, notes). Les modèles
+  distribués sont dans `templates/`. Ne jamais confondre les deux (INV-002).
+- La seule barrière est `bash tests/check-kit.sh`. Il vérifie :
+  - le frontmatter des agents ;
+  - que chaque clé STACK citée par un agent existe dans le modèle ;
+  - que le vocabulaire partagé entre agents est identique ;
+  - qu'aucun octet parasite ne s'est glissé dans les scripts ;
+  - le contrat d'installation, en installant deux fois dans un dépôt jetable avec les deux scripts.
+- Chaque changement a son entrée dans le CHANGELOG. Une règle issue d'un projet réel a sa ligne dans `docs/LESSONS-*.md`.
+- Les projets récupèrent une nouvelle version en relançant le script d'installation sur eux-mêmes.
 
 ## Personnalisation
 - **Changer de stack** : `.vibes/STACK.md` uniquement. Aucun prompt n'a de toolchain en dur.

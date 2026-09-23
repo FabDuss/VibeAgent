@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.1.0 -- 2026-09-23
+
+Le kit se développe désormais avec ses propres agents.
+
+### Changé
+- Les modèles distribués `STACK.md`, `INVARIANTS.md` et `CONVENTIONS.md` passent de `.vibes/` à **`templates/vibes/`**.
+  Les scripts d'installation les copient depuis ce nouvel emplacement ; la destination dans les projets reste `.vibes/`.
+- **`.vibes/` devient l'espace de travail du kit lui-même** : STACK rempli, invariants du kit (INV-001 à INV-006),
+  conventions d'écriture des agents, plans et notes.
+
+### Nouveau
+- **`tests/check-kit.sh`** : garde du kit. Il contrôle :
+  - le frontmatter des agents ;
+  - les agents que `vibe` peut dispatcher ;
+  - que les clés STACK citées par les agents existent dans le modèle ;
+  - le vocabulaire partagé ;
+  - l'absence d'octets parasites dans les scripts ;
+  - le contrat d'installation (installation fraîche puis relance, avec `install.sh` et `install.ps1`).
+
+  Validé par un test de mutation : 4 défauts injectés, 4 détectés.
+- `CLAUDE.md` du dépôt (règles du mode relais + séparation modèles / espace de travail) et `.gitignore`.
+
 ## 2.0.0 -- 2026-09-23
 
 Refonte à partir des leçons de SuiviTransfo (voir [docs/LESSONS-TRANSFO.md](docs/LESSONS-TRANSFO.md)).
