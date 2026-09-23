@@ -1,7 +1,7 @@
 # 001 -- vibe, agent par défaut des projets équipés
 
 **Status**: abandoned
-**Delivery**: branch `main` ; commits none (abandonné avant tout dispatch : aucun code) ; pushed: no ; PR: none ; deployed: no ; verified: no
+**Delivery**: branch `main` ; commits none (abandonné avant tout dispatch : aucun code) ; pushed: yes (commits docs `.vibes/` sur origin/main, 2026-09-23, à la demande de l'utilisateur : "pousse les commits et cloturons cette session") ; PR: none ; deployed: no ; verified: no
 **Lane**: standard
 **Origin**: user request 2026-09-23 (session VS Code, vibe relayé en sous-agent)
 **Scope**: faire de `vibe` l'agent principal par défaut de tout projet où le kit est installé, via un `.claude/settings.json` versionné (`"agent": "vibe"`) que `install.sh` / `install.ps1` créent s'il manque (jamais modifié s'il existe, opt-out par option), avec garde de test, contrôle `.gitignore`, doc, et application au dépôt du kit lui-même.
