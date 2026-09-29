@@ -6,6 +6,7 @@
 #   4. shared vocabulary is identical across agents; retired rules stay retired
 #   5. scripts contain no stray control / non-ASCII bytes (PowerShell 5.1 misreads them)
 #   6. install contract: agents added then UPDATED, project files NEVER overwritten
+#      (incl. --with-docs: AGENTS.md + CLAUDE.md shim)
 #      (install.sh always; install.ps1 when PowerShell is available)
 # Usage: bash tests/check-kit.sh    (exit 1 on any failure)
 set -uo pipefail
@@ -78,6 +79,11 @@ assert_install() { # $1 = label, $2 = target dir
     check '[[ -f "$t/.vibes/$d/.gitkeep" ]]' "$label: .vibes/$d/ not created"
   done
 }
+assert_docs() { # $1 = label, $2 = target dir: --with-docs adds AGENTS.md + the CLAUDE.md shim
+  local label="$1" t="$2"
+  check 'cmp -s "$ROOT/templates/AGENTS.md" "$t/AGENTS.md"' "$label: AGENTS.md not installed from templates/AGENTS.md"
+  check 'grep -qx "@AGENTS.md" "$t/CLAUDE.md"' "$label: CLAUDE.md shim does not import @AGENTS.md"
+}
 tamper() { # simulate a project edit and a stale agent
   echo "PROJECT EDIT" >>"$1/.vibes/STACK.md"
   echo "stale" >"$1/.claude/agents/vibe.md"
@@ -97,17 +103,33 @@ if bash "$ROOT/install.sh" "$T" >/dev/null; then ok; else ko "install.sh failed 
 assert_rerun "install.sh" "$T"
 rm -rf "$T"
 
+# with-docs: project rule files are never overwritten; an existing CLAUDE.md is only hinted at
+T="$(mktemp -d)"
+git -C "$T" init -q
+if bash "$ROOT/install.sh" "$T" --with-docs >/dev/null; then ok; else ko "install.sh --with-docs failed on a fresh repo"; fi
+assert_docs "install.sh --with-docs" "$T"
+echo "PROJECT RULES" >"$T/AGENTS.md"
+echo "PROJECT CLAUDE" >"$T/CLAUDE.md"
+if bash "$ROOT/install.sh" "$T" --with-docs >/dev/null; then ok; else ko "install.sh --with-docs failed on re-run"; fi
+check 'grep -q "PROJECT RULES" "$T/AGENTS.md" && grep -q "PROJECT CLAUDE" "$T/CLAUDE.md"' "install.sh --with-docs OVERWROTE AGENTS.md or CLAUDE.md"
+rm -rf "$T"
+
 PS="$(command -v pwsh || command -v powershell.exe || true)"
 if [[ -n "$PS" ]]; then
   T="$(mktemp -d)"
   git -C "$T" init -q
   winpath() { if command -v cygpath >/dev/null; then cygpath -w "$1"; else echo "$1"; fi; }
-  run_ps() { "$PS" -NoProfile -ExecutionPolicy Bypass -File "$(winpath "$ROOT/install.ps1")" -Target "$(winpath "$T")" >/dev/null; }
+  run_ps() { "$PS" -NoProfile -ExecutionPolicy Bypass -File "$(winpath "$ROOT/install.ps1")" -Target "$(winpath "$T")" "$@" >/dev/null; }
   if run_ps; then ok; else ko "install.ps1 failed on a fresh repo"; fi
   assert_install "install.ps1" "$T"
   tamper "$T"
   if run_ps; then ok; else ko "install.ps1 failed on re-run"; fi
   assert_rerun "install.ps1" "$T"
+  rm -rf "$T"
+  T="$(mktemp -d)"
+  git -C "$T" init -q
+  if run_ps -WithDocs; then ok; else ko "install.ps1 -WithDocs failed on a fresh repo"; fi
+  assert_docs "install.ps1 -WithDocs" "$T"
   rm -rf "$T"
 else
   echo "note: PowerShell not found -- install.ps1 not exercised"

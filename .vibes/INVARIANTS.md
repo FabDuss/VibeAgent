@@ -29,7 +29,7 @@ Guard: `tests/check-kit.sh` section 6 (installed files must equal `templates/vib
 Source: 2026-09-23, user ("ok vas y" to the split proposal)
 
 ### INV-003 -- Install contract
-Rule: `install.ps1` / `install.sh` add or overwrite `.claude/agents/vibe*.md`, and add project files (`.vibes/*`, VISION, ARCHITECTURE, CLAUDE.md) ONLY when missing -- never overwrite them. Both scripts behave the same.
+Rule: `install.ps1` / `install.sh` add or overwrite `.claude/agents/vibe*.md`, and add project files (`.vibes/*`, VISION, ARCHITECTURE, AGENTS.md, CLAUDE.md shim) ONLY when missing -- never overwrite them. Both scripts behave the same.
 Where: `install.ps1`, `install.sh`
 Guard: `tests/check-kit.sh` section 6 (fresh install + re-run with a project edit and a stale agent)
 Source: 2026-09-23, kit v2

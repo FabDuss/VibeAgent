@@ -50,7 +50,8 @@ claude --agent vibe
 sous-agent et ne peut pas te parler en cours de route. Il passe en **mode relais** : il s'arrête à chaque porte et
 renvoie un bloc `HANDBACK (vibe)` (questions numérotées, demande de GO). La session appelante te le montre, puis
 lui renvoie ta réponse **mot pour mot**, via SendMessage pour qu'il garde son contexte. Un GO paraphrasé ne compte
-pas. Le bloc à ajouter au `CLAUDE.md` du projet est dans [templates/CLAUDE.md](templates/CLAUDE.md).
+pas. Le bloc à ajouter au `AGENTS.md` du projet est dans [templates/AGENTS.md](templates/AGENTS.md)
+(`CLAUDE.md` ne fait que l'importer via `@AGENTS.md`, voir [templates/CLAUDE.md](templates/CLAUDE.md)).
 
 ## Installation dans un projet
 
@@ -66,7 +67,7 @@ pas. Le bloc à ajouter au `CLAUDE.md` du projet est dans [templates/CLAUDE.md](
 Le script :
 - ajoute ou **met à jour** les 5 agents dans `.claude/agents/` (ils appartiennent au kit) ;
 - ajoute `.vibes/STACK.md`, `INVARIANTS.md`, `CONVENTIONS.md`, `plans/`, `notes/`, `audits/` **seulement s'ils manquent**. Il n'écrase jamais les fichiers du projet ;
-- avec `-WithDocs` / `--with-docs`, ajoute `VISION.md`, `ARCHITECTURE.md` et `CLAUDE.md` s'ils manquent ;
+- avec `-WithDocs` / `--with-docs`, ajoute `VISION.md`, `ARCHITECTURE.md`, `AGENTS.md` et un `CLAUDE.md` d'une ligne (`@AGENTS.md`) s'ils manquent. Un `AGENTS.md` ou un `CLAUDE.md` existant n'est jamais touché : le script indique seulement quoi y fusionner ;
 - vérifie que `.claude/agents/` n'est pas ignoré par git (les sessions cloud en ont besoin) et suggère un `.gitattributes`.
 
 Pour **mettre à jour** un projet déjà équipé, relance simplement le script : seuls les agents sont remplacés.
@@ -74,7 +75,7 @@ Pour **mettre à jour** un projet déjà équipé, relance simplement le script 
 ### Checklist de démarrage (15 minutes qui en économisent des heures)
 1. **Remplir `.vibes/STACK.md` à partir de la vérité** (toutes ses valeurs sont des exemples tant que
    `STACK_STATUS: template` ; `vibe` le remplit avec toi avant tout plan si tu ne l'as pas fait) : les workflows CI et les fichiers de règles du repo
-   (AGENTS.md, CLAUDE.md, CONTRIBUTING). Tu y déclares :
+   (AGENTS.md, CLAUDE.md s'il existe, CONTRIBUTING). Tu y déclares :
    - les commandes par composant (lint, typecheck, tests, build, E2E) ;
    - la parité CI et ses déclencheurs ;
    - les ports : les tiens, que les agents ne touchent jamais ; ceux des tests ; ceux de l'aperçu ; plus la recette de vérification live ;
@@ -128,7 +129,8 @@ doivent pouvoir reprendre à partir du repo seul.
 .
 ├── README.md                  <- ce fichier
 ├── CHANGELOG.md
-├── CLAUDE.md                  <- règles de session pour développer le kit lui-même
+├── AGENTS.md                  <- règles de session pour développer le kit lui-même (source unique, tout agent)
+├── CLAUDE.md                  <- une ligne `@AGENTS.md` : Claude Code lit CLAUDE.md, pas AGENTS.md
 ├── .gitattributes             <- fins de ligne LF (modèle à reprendre dans tes projets)
 ├── docs/LESSONS-TRANSFO.md    <- les leçons SuiviTransfo et où chacune est encodée
 ├── install.ps1 / install.sh   <- installation / mise à jour dans un projet
@@ -143,7 +145,8 @@ doivent pouvoir reprendre à partir du repo seul.
 │   ├── vibes/                 <- toujours, s'ils manquent : STACK.md, INVARIANTS.md, CONVENTIONS.md
 │   ├── VISION.md              <- avec -WithDocs, s'il manque
 │   ├── ARCHITECTURE.md        <- idem
-│   └── CLAUDE.md              <- idem (règles du mode relais pour la session principale)
+│   ├── AGENTS.md              <- idem (règles du mode relais pour la session principale)
+│   └── CLAUDE.md              <- idem (import `@AGENTS.md`)
 └── .vibes/                    <- l'espace de travail du kit lui-même (jamais copié)
     ├── STACK.md INVARIANTS.md CONVENTIONS.md
     └── plans/ notes/ audits/

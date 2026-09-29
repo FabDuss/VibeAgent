@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.2.0 -- 2026-09-29
+
+Architecture plus générique : `AGENTS.md` devient le fichier de règles, lisible par n'importe quel agent de code.
+
+### Changé
+- **`AGENTS.md` remplace `CLAUDE.md` comme source unique des règles de session**, dans le dépôt du kit comme dans
+  le modèle distribué (`templates/AGENTS.md`).
+- `CLAUDE.md` n'est plus qu'un shim d'une ligne, `@AGENTS.md`, parce que Claude Code lit `CLAUDE.md` et non
+  `AGENTS.md`. On édite `AGENTS.md`, jamais le shim.
+- `install.ps1` / `install.sh` avec `-WithDocs` / `--with-docs` : ajoutent `AGENTS.md` et le shim `CLAUDE.md` s'ils
+  manquent. Un `AGENTS.md` ou `CLAUDE.md` existant n'est jamais écrasé ; le script signale ce qu'il faut fusionner,
+  ou la ligne `@AGENTS.md` à ajouter.
+- `tests/check-kit.sh` couvre `--with-docs` (installation fraîche, non-écrasement à la relance).
+
+### Migration
+Projets déjà équipés : déplacer les règles de leur `CLAUDE.md` vers `AGENTS.md`, puis ne laisser dans `CLAUDE.md`
+que `@AGENTS.md`. Les agents restent dans `.claude/agents/`.
+
 ## 2.1.0 -- 2026-09-23
 
 Le kit se développe désormais avec ses propres agents.

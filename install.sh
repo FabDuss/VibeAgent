@@ -3,7 +3,7 @@
 #   - Agents (.claude/agents/vibe*.md) are kit-owned: added or UPDATED (overwritten).
 #   - Project files (.vibes/STACK.md, INVARIANTS.md, CONVENTIONS.md, plans/, notes/, audits/)
 #     are project-owned: added only when missing, NEVER overwritten.
-#   - --with-docs also adds VISION.md, ARCHITECTURE.md and CLAUDE.md templates when missing.
+#   - --with-docs also adds VISION.md, ARCHITECTURE.md, AGENTS.md and a CLAUDE.md shim (@AGENTS.md) when missing.
 #
 # Usage:
 #   ./install.sh <repo path> [--with-docs]
@@ -79,8 +79,15 @@ if [[ -n "$TARGET" ]]; then
   if [[ $WITH_DOCS -eq 1 ]]; then
     copy_if_missing "$KIT/templates/VISION.md" "$TARGET/VISION.md"
     copy_if_missing "$KIT/templates/ARCHITECTURE.md" "$TARGET/ARCHITECTURE.md"
+    if [[ -e "$TARGET/AGENTS.md" ]]; then
+      echo "  hint          : merge templates/AGENTS.md (Vibe relay rules) into your existing AGENTS.md"
+    else
+      copy_if_missing "$KIT/templates/AGENTS.md" "$TARGET/AGENTS.md"
+    fi
     if [[ -e "$TARGET/CLAUDE.md" ]]; then
-      echo "  hint          : merge templates/CLAUDE.md (Vibe relay rules) into your existing CLAUDE.md"
+      if ! grep -qF "@AGENTS.md" "$TARGET/CLAUDE.md"; then
+        echo "  hint          : add the line '@AGENTS.md' to your CLAUDE.md so Claude Code loads AGENTS.md"
+      fi
     else
       copy_if_missing "$KIT/templates/CLAUDE.md" "$TARGET/CLAUDE.md"
     fi
@@ -108,7 +115,7 @@ if [[ -n "$TARGET" ]]; then
 
   echo
   echo "Next steps:"
-  echo "  1. Fill .vibes/STACK.md from your CI workflows and rule files (AGENTS.md, CLAUDE.md)."
+  echo "  1. Fill .vibes/STACK.md from your CI workflows and rule files (AGENTS.md, plus CLAUDE.md if any)."
   echo "  2. Measure the BASELINE (lint / typecheck / tests on the base branch) and write it in STACK."
   echo "  3. Set the project git identity: git config --local user.email <email>"
   echo "  4. Fill Part B of .vibes/CONVENTIONS.md; keep or trim Part A."
