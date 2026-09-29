@@ -10,7 +10,7 @@ STACK_STATUS: filled
 
 ## 1. RULE FILES & PRECEDENCE
 ```
-RULE_FILES: AGENTS.md          # CLAUDE.md is only the `@AGENTS.md` shim for Claude Code
+RULE_FILES: AGENTS.md          # no CLAUDE.md on purpose: Claude Code reads AGENTS.md only when there is none
 PRECEDENCE: RULE_FILES > .vibes/INVARIANTS.md > .vibes/STACK.md > .vibes/CONVENTIONS.md
 ```
 

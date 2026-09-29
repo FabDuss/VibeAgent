@@ -2,8 +2,9 @@
 
 > Keep this file short: procedures and commands live in `.vibes/STACK.md`, settled decisions in
 > `.vibes/INVARIANTS.md`, code rules in `.vibes/CONVENTIONS.md`. Merge this block into an
-> existing AGENTS.md rather than replacing it. Claude Code reads `CLAUDE.md`, not
-> `AGENTS.md`: keep a `CLAUDE.md` containing `@AGENTS.md` (templates/CLAUDE.md).
+> existing AGENTS.md rather than replacing it. Claude Code (v2.1.277+) reads this file by
+> itself, but only if no `CLAUDE.md` / `CLAUDE.local.md` exists in the working directory or above:
+> if you have one, put `@AGENTS.md` in it.
 
 ## Vibe agents
 This repo uses the Vibe agents (`.claude/agents/vibe*.md`) and their workspace `.vibes/`.

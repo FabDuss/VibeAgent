@@ -20,7 +20,7 @@ STACK_STATUS: template        # set to "filled" once every value below is REAL f
 ## 1. RULE FILES & PRECEDENCE
 Repo files that carry rules agents must obey. Agents read them at session start.
 ```
-RULE_FILES: AGENTS.md          # (CLAUDE.md, if any, should only import it: @AGENTS.md)
+RULE_FILES: AGENTS.md          # (a CLAUDE.md, if any, masks AGENTS.md unless it imports it: @AGENTS.md)
 PRECEDENCE: RULE_FILES > .vibes/INVARIANTS.md > .vibes/STACK.md > .vibes/CONVENTIONS.md
 ```
 

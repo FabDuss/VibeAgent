@@ -9,9 +9,10 @@ This repo IS the Vibe agents kit, and it is developed with its own agents.
 - `.claude/agents/`: the agents, both used here and distributed.
 
 ## Rule files (tool-agnostic)
-`AGENTS.md` is the single source of the repo rules, readable by any coding agent. `CLAUDE.md` is only a
-one-line shim (`@AGENTS.md`) because Claude Code reads `CLAUDE.md`, not `AGENTS.md`. Edit `AGENTS.md`, never
-the shim.
+`AGENTS.md` is the single source of the repo rules, readable by any coding agent. There is deliberately no
+`CLAUDE.md`: Claude Code (v2.1.277+) reads `AGENTS.md` itself, but ONLY when no `CLAUDE.md` / `CLAUDE.local.md`
+exists in the working directory or above it. Do not add one (a personal `CLAUDE.local.md` silently disables
+`AGENTS.md`; if you need one, set /config > Project instructions to `claude-md-and-agents-md`).
 
 Before any work, read `.vibes/STACK.md`. The only gate is `bash tests/check-kit.sh`: run it
 before every commit.

@@ -6,7 +6,7 @@
 #   4. shared vocabulary is identical across agents; retired rules stay retired
 #   5. scripts contain no stray control / non-ASCII bytes (PowerShell 5.1 misreads them)
 #   6. install contract: agents added then UPDATED, project files NEVER overwritten
-#      (incl. --with-docs: AGENTS.md + CLAUDE.md shim)
+#      (incl. --with-docs: AGENTS.md, no CLAUDE.md)
 #      (install.sh always; install.ps1 when PowerShell is available)
 # Usage: bash tests/check-kit.sh    (exit 1 on any failure)
 set -uo pipefail
@@ -79,10 +79,10 @@ assert_install() { # $1 = label, $2 = target dir
     check '[[ -f "$t/.vibes/$d/.gitkeep" ]]' "$label: .vibes/$d/ not created"
   done
 }
-assert_docs() { # $1 = label, $2 = target dir: --with-docs adds AGENTS.md + the CLAUDE.md shim
+assert_docs() { # $1 = label, $2 = target dir: --with-docs adds AGENTS.md and NO CLAUDE.md (it would mask AGENTS.md)
   local label="$1" t="$2"
   check 'cmp -s "$ROOT/templates/AGENTS.md" "$t/AGENTS.md"' "$label: AGENTS.md not installed from templates/AGENTS.md"
-  check 'grep -qx "@AGENTS.md" "$t/CLAUDE.md"' "$label: CLAUDE.md shim does not import @AGENTS.md"
+  check '[[ ! -e "$t/CLAUDE.md" ]]' "$label: a CLAUDE.md was created (Claude Code would then ignore AGENTS.md)"
 }
 tamper() { # simulate a project edit and a stale agent
   echo "PROJECT EDIT" >>"$1/.vibes/STACK.md"
@@ -103,7 +103,7 @@ if bash "$ROOT/install.sh" "$T" >/dev/null; then ok; else ko "install.sh failed 
 assert_rerun "install.sh" "$T"
 rm -rf "$T"
 
-# with-docs: project rule files are never overwritten; an existing CLAUDE.md is only hinted at
+# with-docs: project rule files are never overwritten; an existing CLAUDE.md is only warned about
 T="$(mktemp -d)"
 git -C "$T" init -q
 if bash "$ROOT/install.sh" "$T" --with-docs >/dev/null; then ok; else ko "install.sh --with-docs failed on a fresh repo"; fi

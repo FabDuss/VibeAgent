@@ -6,7 +6,7 @@
   - Agents (.claude/agents/vibe*.md) are kit-owned: they are added or UPDATED (overwritten).
   - Project files (.vibes/STACK.md, INVARIANTS.md, CONVENTIONS.md, plans/, notes/, audits/)
     are project-owned: they are added only when missing, NEVER overwritten.
-  - -WithDocs also adds VISION.md, ARCHITECTURE.md, AGENTS.md and a CLAUDE.md shim (@AGENTS.md) at the repo root
+  - -WithDocs also adds VISION.md, ARCHITECTURE.md, and AGENTS.md at the repo root
     when missing.
 
 .EXAMPLE
@@ -85,12 +85,8 @@ if ($Target) {
       Copy-IfMissing (Join-Path $kit 'templates\AGENTS.md') $agentsMd
     }
     $claudeMd = Join-Path $Target 'CLAUDE.md'
-    if (Test-Path $claudeMd) {
-      if (-not (Select-String -Path $claudeMd -SimpleMatch '@AGENTS.md' -Quiet)) {
-        Write-Host "  hint          : add the line '@AGENTS.md' to your CLAUDE.md so Claude Code loads AGENTS.md"
-      }
-    } else {
-      Copy-IfMissing (Join-Path $kit 'templates\CLAUDE.md') $claudeMd
+    if ((Test-Path $claudeMd) -and -not (Select-String -Path $claudeMd -SimpleMatch '@AGENTS.md' -Quiet)) {
+      Write-Host "  WARNING       : CLAUDE.md exists, so Claude Code ignores AGENTS.md. Move its rules to AGENTS.md, or add the line '@AGENTS.md' to it."
     }
   }
 
@@ -120,7 +116,7 @@ if ($Target) {
 
   Write-Host ''
   Write-Host 'Next steps:'
-  Write-Host '  1. Fill .vibes/STACK.md from your CI workflows and rule files (AGENTS.md, plus CLAUDE.md if any).'
+  Write-Host '  1. Fill .vibes/STACK.md from your CI workflows and rule files (AGENTS.md, CLAUDE.md if any).'
   Write-Host '  2. Measure the BASELINE (lint / typecheck / tests on the base branch) and write it in STACK.'
   Write-Host '  3. Set the project git identity: git config --local user.email <email>'
   Write-Host '  4. Fill Part B of .vibes/CONVENTIONS.md; keep or trim Part A.'

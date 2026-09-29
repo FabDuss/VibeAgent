@@ -7,16 +7,19 @@ Architecture plus générique : `AGENTS.md` devient le fichier de règles, lisib
 ### Changé
 - **`AGENTS.md` remplace `CLAUDE.md` comme source unique des règles de session**, dans le dépôt du kit comme dans
   le modèle distribué (`templates/AGENTS.md`).
-- `CLAUDE.md` n'est plus qu'un shim d'une ligne, `@AGENTS.md`, parce que Claude Code lit `CLAUDE.md` et non
-  `AGENTS.md`. On édite `AGENTS.md`, jamais le shim.
-- `install.ps1` / `install.sh` avec `-WithDocs` / `--with-docs` : ajoutent `AGENTS.md` et le shim `CLAUDE.md` s'ils
-  manquent. Un `AGENTS.md` ou `CLAUDE.md` existant n'est jamais écrasé ; le script signale ce qu'il faut fusionner,
-  ou la ligne `@AGENTS.md` à ajouter.
+- **Plus aucun `CLAUDE.md`** dans le kit ni dans les modèles : Claude Code (v2.1.277 ou plus) lit `AGENTS.md`
+  directement, mais seulement s'il n'existe ni `CLAUDE.md` ni `CLAUDE.local.md` dans le dossier de travail ou
+  au-dessus (vérifié dans la doc officielle, page « How Claude remembers your project »).
+- `install.ps1` / `install.sh` avec `-WithDocs` / `--with-docs` : ajoutent `AGENTS.md` s'il manque et ne créent
+  jamais de `CLAUDE.md`. Un `AGENTS.md` existant n'est jamais écrasé. Si un `CLAUDE.md` existe sans `@AGENTS.md`,
+  le script avertit qu'il masque `AGENTS.md`.
 - `tests/check-kit.sh` couvre `--with-docs` (installation fraîche, non-écrasement à la relance).
 
 ### Migration
-Projets déjà équipés : déplacer les règles de leur `CLAUDE.md` vers `AGENTS.md`, puis ne laisser dans `CLAUDE.md`
-que `@AGENTS.md`. Les agents restent dans `.claude/agents/`.
+Projets déjà équipés : déplacer les règles de leur `CLAUDE.md` vers `AGENTS.md`, puis supprimer `CLAUDE.md`
+(ou n'y laisser que `@AGENTS.md`, utile avant Claude Code v2.1.281 sur Bedrock ou sans télémétrie). Un
+`CLAUDE.local.md` masque aussi `AGENTS.md` : voir `/config` > Project instructions. Les agents restent dans
+`.claude/agents/`.
 
 ## 2.1.0 -- 2026-09-23
 

@@ -50,8 +50,9 @@ claude --agent vibe
 sous-agent et ne peut pas te parler en cours de route. Il passe en **mode relais** : il s'arrête à chaque porte et
 renvoie un bloc `HANDBACK (vibe)` (questions numérotées, demande de GO). La session appelante te le montre, puis
 lui renvoie ta réponse **mot pour mot**, via SendMessage pour qu'il garde son contexte. Un GO paraphrasé ne compte
-pas. Le bloc à ajouter au `AGENTS.md` du projet est dans [templates/AGENTS.md](templates/AGENTS.md)
-(`CLAUDE.md` ne fait que l'importer via `@AGENTS.md`, voir [templates/CLAUDE.md](templates/CLAUDE.md)).
+pas. Le bloc à ajouter au `AGENTS.md` du projet est dans [templates/AGENTS.md](templates/AGENTS.md).
+Claude Code (v2.1.277 ou plus) lit `AGENTS.md` tout seul, **à condition qu'il n'existe aucun `CLAUDE.md` ni
+`CLAUDE.local.md`** dans le dossier de travail ou au-dessus. S'il y en a un, il masque `AGENTS.md` : mets-y `@AGENTS.md`.
 
 ## Installation dans un projet
 
@@ -67,7 +68,7 @@ pas. Le bloc à ajouter au `AGENTS.md` du projet est dans [templates/AGENTS.md](
 Le script :
 - ajoute ou **met à jour** les 5 agents dans `.claude/agents/` (ils appartiennent au kit) ;
 - ajoute `.vibes/STACK.md`, `INVARIANTS.md`, `CONVENTIONS.md`, `plans/`, `notes/`, `audits/` **seulement s'ils manquent**. Il n'écrase jamais les fichiers du projet ;
-- avec `-WithDocs` / `--with-docs`, ajoute `VISION.md`, `ARCHITECTURE.md`, `AGENTS.md` et un `CLAUDE.md` d'une ligne (`@AGENTS.md`) s'ils manquent. Un `AGENTS.md` ou un `CLAUDE.md` existant n'est jamais touché : le script indique seulement quoi y fusionner ;
+- avec `-WithDocs` / `--with-docs`, ajoute `VISION.md`, `ARCHITECTURE.md`, `AGENTS.md` s'ils manquent (jamais de `CLAUDE.md`). Un `AGENTS.md` existant n'est jamais touché ; si un `CLAUDE.md` masque `AGENTS.md`, le script avertit ;
 - vérifie que `.claude/agents/` n'est pas ignoré par git (les sessions cloud en ont besoin) et suggère un `.gitattributes`.
 
 Pour **mettre à jour** un projet déjà équipé, relance simplement le script : seuls les agents sont remplacés.
@@ -129,8 +130,7 @@ doivent pouvoir reprendre à partir du repo seul.
 .
 ├── README.md                  <- ce fichier
 ├── CHANGELOG.md
-├── AGENTS.md                  <- règles de session pour développer le kit lui-même (source unique, tout agent)
-├── CLAUDE.md                  <- une ligne `@AGENTS.md` : Claude Code lit CLAUDE.md, pas AGENTS.md
+├── AGENTS.md                  <- règles de session pour développer le kit lui-même (tout agent, dont Claude Code)
 ├── .gitattributes             <- fins de ligne LF (modèle à reprendre dans tes projets)
 ├── docs/LESSONS-TRANSFO.md    <- les leçons SuiviTransfo et où chacune est encodée
 ├── install.ps1 / install.sh   <- installation / mise à jour dans un projet
@@ -145,8 +145,7 @@ doivent pouvoir reprendre à partir du repo seul.
 │   ├── vibes/                 <- toujours, s'ils manquent : STACK.md, INVARIANTS.md, CONVENTIONS.md
 │   ├── VISION.md              <- avec -WithDocs, s'il manque
 │   ├── ARCHITECTURE.md        <- idem
-│   ├── AGENTS.md              <- idem (règles du mode relais pour la session principale)
-│   └── CLAUDE.md              <- idem (import `@AGENTS.md`)
+│   └── AGENTS.md              <- idem (règles du mode relais pour la session principale)
 └── .vibes/                    <- l'espace de travail du kit lui-même (jamais copié)
     ├── STACK.md INVARIANTS.md CONVENTIONS.md
     └── plans/ notes/ audits/
