@@ -29,7 +29,7 @@ for f in "$AGENTS"/*.md; do
   check 'grep -qx "name: $name" <<<"$fm"' "$name: 'name' does not match the file name"
   check 'grep -qE "^description: \".+\"$" <<<"$fm"' "$name: 'description' missing or not a quoted string"
   check 'grep -qE "^tools: .+" <<<"$fm"' "$name: 'tools' missing"
-  check 'grep -qE "^model: .+" <<<"$fm"' "$name: 'model' missing"
+  check 'grep -qx "model: inherit" <<<"$fm"' "$name: 'model' must be 'inherit' (follow the model the user selected)"
   color="$(sed -n 's/^color: //p' <<<"$fm")"
   check '[[ -z "$color" || "$COLORS" == *" $color "* ]]' "$name: invalid color '$color'"
 done

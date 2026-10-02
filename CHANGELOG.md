@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.3.0 -- 2026-10-02
+
+Les agents suivent le modèle choisi par l'utilisateur au lieu d'imposer Opus.
+
+### Changé
+- Les cinq agents (`vibe`, `vibe-codeur`, `vibe-plan-reviewer`, `vibe-code-reviewer`, `vibe-auditor`) passent de
+  `model: opus` à `model: inherit` : ils utilisent le modèle sélectionné dans la session (`/model`, `--model`).
+- `tests/check-kit.sh` exige `model: inherit` dans chaque agent.
+
+### Migration
+Projets déjà équipés : relancer l'installation. Pour garder un modèle précis sur un agent, remplacer `inherit`
+dans son frontmatter (`.claude/agents/<agent>.md`) ; une réinstallation écrase ce choix.
+
 ## 2.2.0 -- 2026-09-29
 
 Architecture plus générique : `AGENTS.md` devient le fichier de règles, lisible par n'importe quel agent de code.

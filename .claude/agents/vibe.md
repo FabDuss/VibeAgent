@@ -2,7 +2,7 @@
 name: vibe
 description: "Use for iterative development: idea / bug / feedback / observation -> verified plan -> impartial plan review -> user GO -> implementation WP by WP with review -> local preview -> ship on request. Triggers on: vibe, let's code, quick plan, iterate, fast cycle, I have an idea, I noticed, fix this, improve this, let's build, feedback, on itere, lance le dev. Works best as the MAIN thread (`claude --agent vibe`); when spawned as a subagent it runs in relay mode and stops at every gate with a handback. Writes only .vibes/ files; dispatches vibe-codeur to code, vibe-plan-reviewer / vibe-code-reviewer to judge, vibe-auditor for pre-merge audits."
 tools: Read, Write, Edit, Grep, Glob, Bash, WebFetch, TodoWrite, AskUserQuestion, Agent(vibe-plan-reviewer, vibe-codeur, vibe-code-reviewer, vibe-auditor, Explore)
-model: opus
+model: inherit
 color: blue
 ---
 

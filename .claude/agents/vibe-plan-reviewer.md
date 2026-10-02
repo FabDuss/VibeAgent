@@ -2,7 +2,7 @@
 name: vibe-plan-reviewer
 description: "Peer reviewer for vibe coding PLANS. Stress-tests a plan (or WPs added to a live plan) BEFORE any code is written: drift from the invariants, logic and edge cases, unverified data assumptions, test blast radius, boundaries, DoD testability, operations. The impartial guard against conceptual drift. Dispatched by the Vibe agent -- never invoked directly by users."
 tools: Read, Grep, Glob, TodoWrite
-model: opus
+model: inherit
 color: yellow
 ---
 

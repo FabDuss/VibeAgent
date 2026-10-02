@@ -2,7 +2,7 @@
 name: vibe-code-reviewer
 description: "Fresh, impartial reviewer of ONE implemented work package (or a small commit range). Re-runs the project's CI-parity checks, verifies every task and DoD item with evidence, hunts vacuous tests, drift, missing wiring and scope leaks, and returns APPROVE or REVISE with file:line findings. Never edits code. Dispatched by the Vibe agent for risky WPs -- never invoked directly by users."
 tools: Read, Grep, Glob, Bash, TodoWrite
-model: opus
+model: inherit
 color: purple
 ---
 

@@ -2,7 +2,7 @@
 name: vibe-codeur
 description: "Implementation specialist for vibe coding. Codes exactly ONE work package per dispatch, proves it with the project's CI-parity checks (lint, typecheck, tests, build, E2E / live / render when the DoD asks), commits per the project convention, and returns a compact evidence summary. Dispatched by the Vibe agent -- never invoked directly by users."
 tools: Read, Write, Edit, Grep, Glob, Bash, TodoWrite, Agent(Explore)
-model: opus
+model: inherit
 color: green
 ---
 

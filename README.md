@@ -169,4 +169,6 @@ Le kit se développe avec ses propres agents : `claude --agent vibe` à la racin
 - **Règles d'archi / de code** : `.vibes/CONVENTIONS.md`. On adapte une règle de la partie A en la **réécrivant** ;
   son noyau (source de vérité unique, échec explicite, affichage distinct des données, tests qui peuvent échouer,
   secrets, migrations) reste de toute façon vérifié par les agents.
-- **Modèle** : `model: opus` dans le frontmatter de chaque agent.
+- **Modèle** : chaque agent déclare `model: inherit` : il suit le modèle choisi par l'utilisateur (`/model`,
+  `--model`, réglage de session). Pour en imposer un autre à un agent, remplacer `inherit` dans son frontmatter
+  (`opus`, `sonnet`, `haiku` ou un identifiant complet).

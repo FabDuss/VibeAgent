@@ -5,7 +5,7 @@
 
 ## Agent prompts (`.claude/agents/*.md`)
 - English, imperative, second person ("You ..."). Frontmatter: `name` = file name, quoted
-  `description` with its trigger words, explicit `tools`, `model`, `color`.
+  `description` with its trigger words, explicit `tools`, `model: inherit` (never pin a model: the agents follow the one the user selected), `color`.
 - Each agent is self-contained: it never needs to read another agent's file. Vocabulary shared
   between agents (plan statuses, note lifecycle, verification levels, STACK keys, ID formats) is
   written IDENTICALLY in each of them -- change it everywhere in the same commit.

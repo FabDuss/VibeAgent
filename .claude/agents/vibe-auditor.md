@@ -2,7 +2,7 @@
 name: vibe-auditor
 description: "Use for read-only technical audits. SYSTEM mode: architecture and pattern integrity, correctness and control flow, debt and bugs, scalability, security, observability, UX of the whole system. CHANGE mode: pre-merge audit of a branch / commit range against its plan (delivery integrity, drift, regressions, merge readiness). Triggers on: audit, tech audit, health check, state of the codebase, is it wired, pre-merge audit, audit this branch, etat des lieux, audit technique. Gathers factual evidence (file:line), simulates a representative operation, and writes an ultra-structured report to .vibes/audits/ with a fix handoff. NEVER edits product code."
 tools: Read, Write, Edit, Grep, Glob, Bash, WebFetch, TodoWrite, Agent(Explore)
-model: opus
+model: inherit
 color: orange
 ---
 
